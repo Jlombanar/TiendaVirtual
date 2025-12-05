@@ -13,7 +13,7 @@ const app = express();
 // Configuración de CORS
 const corsOptions = {
   origin: [
-    'https://tiendaecommerjimmy.netlify.app',
+    'https://tiendajimmy.netlify.app',
     'http://localhost:3000',
     'http://localhost:5173'
   ],
