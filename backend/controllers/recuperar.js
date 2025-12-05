@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import nodemailer from "nodemailer";
+import { Resend } from 'resend';
 import Users from "../models/User.js";
 import dotenv from "dotenv";
 
@@ -11,30 +11,8 @@ if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
 }
 
 // CONFIGURACIÓN DE CORREO
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    tls: {
-        rejectUnauthorized: false
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000
-});
 
-// Verificar la conexión del transportador
-transporter.verify(function(error, success) {
-    if (error) {
-        console.error('❌ Error en configuración de email:', error);
-    } else {
-        console.log('✅ Servidor de email listo para enviar mensajes');
-    }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // GENERAR CÓDIGO DE 6 DÍGITOS
 const generarCodigo = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -67,25 +45,26 @@ export const solicitarCodigo = async (req, res) => {
         console.log('💾 Código guardado en BD:', codigo);
 
         // ENVIAR CORREO
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: usuario.Correo_Electronico,
-            subject: "Código de Recuperación",
-            html: `
-                <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
-                    <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px;">
-                        <h1 style="color: #2563eb;">TechStore Pro</h1>
-                        <h2 style="color: #333;">Código de Recuperación</h2>
-                        <p>Has solicitado recuperar tu contraseña.</p>
-                        <div style="background-color: #f0f9ff; padding: 20px; border-radius: 5px; text-align: center; margin: 20px 0;">
-                            <h1 style="color: #2563eb; font-size: 36px; letter-spacing: 5px;">${codigo}</h1>
-                        </div>
-                        <p style="color: #666;">Este código expirará en 15 minutos.</p>
-                        <p style="color: #666;">Si no solicitaste este código, ignora este mensaje.</p>
-                    </div>
+       // ENVIAR CORREO
+const info = await resend.emails.send({
+    from: 'onboarding@resend.dev', // Dominio de prueba de Resend
+    to: usuario.Correo_Electronico,
+    subject: "Código de Recuperación",
+    html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px;">
+                <h1 style="color: #2563eb;">TechStore Pro</h1>
+                <h2 style="color: #333;">Código de Recuperación</h2>
+                <p>Has solicitado recuperar tu contraseña.</p>
+                <div style="background-color: #f0f9ff; padding: 20px; border-radius: 5px; text-align: center; margin: 20px 0;">
+                    <h1 style="color: #2563eb; font-size: 36px; letter-spacing: 5px;">${codigo}</h1>
                 </div>
-            `
-        });
+                <p style="color: #666;">Este código expirará en 15 minutos.</p>
+                <p style="color: #666;">Si no solicitaste este código, ignora este mensaje.</p>
+            </div>
+        </div>
+    `
+});
 
         console.log('✅ Email enviado:', info.messageId);
 
