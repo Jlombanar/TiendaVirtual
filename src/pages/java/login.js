@@ -56,14 +56,26 @@ document.addEventListener('DOMContentLoaded',function(){
             console.log('201- Inicio de sesion exitoso');
 
             // guardar Informacion 
+            try {
             localStorage.setItem("sesionActiva", "true");
-            localStorage.setItem("usuario",JSON.stringify({
+            localStorage.setItem("usuario", JSON.stringify({
                 id: resultado.usuario.id,
                 Nombre: resultado.usuario.Nombre,
-                Apellido:resultado.usuario.Apellido,
-                email:resultado.usuario.email,
-                telefono:resultado.usuario.telefono
+                Apellido: resultado.usuario.Apellido,
+                email: resultado.usuario.email,
+                telefono: resultado.usuario.telefono
             }));
+        } catch (storageError) {
+            console.warn('⚠️ localStorage bloqueado, usando sessionStorage');
+            sessionStorage.setItem("sesionActiva", "true");
+            sessionStorage.setItem("usuario", JSON.stringify({
+                id: resultado.usuario.id,
+                Nombre: resultado.usuario.Nombre,
+                Apellido: resultado.usuario.Apellido,
+                email: resultado.usuario.email,
+                telefono: resultado.usuario.telefono
+            }));
+        }
 
             //mensaje de exito 
             errorDiv.className='bg-green-50 border-green-200 text-green-800 px-4 py-3 rounded-lg';
