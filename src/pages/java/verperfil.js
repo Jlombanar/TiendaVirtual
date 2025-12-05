@@ -1,7 +1,7 @@
 // pages/java/perfil.js
 document.addEventListener('DOMContentLoaded', async function() {
     
-    const API_URL = 'http://localhost:8081/api/perfil/obtener';
+    const API_URL = 'https://tiendavirtual-jjxd.onrender.com/api/perfil/obtener';
     
     // Verificar sesión
     if (!localStorage.getItem('sesionActiva')) {

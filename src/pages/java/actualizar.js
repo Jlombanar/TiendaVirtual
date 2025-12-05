@@ -1,7 +1,7 @@
 // actualizarPerfil.js
 document.addEventListener('DOMContentLoaded', async function() {
     
-    const API_URL = 'http://localhost:8081/api/perfil/actualizar';
+    const API_URL = 'https://tiendavirtual-jjxd.onrender.com/api/perfil/actualizar';
     
     // Elementos del DOM
     const nombreInput = document.getElementById('nombre');

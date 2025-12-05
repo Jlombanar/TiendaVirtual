@@ -36,7 +36,7 @@ async function finalizarCompra() {
     };
 
     // Enviar el pedido al backend
-    const response = await fetch('http://localhost:8081/api/pedidos', {
+    const response = await fetch('https://tiendavirtual-jjxd.onrender.com/api/pedidos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

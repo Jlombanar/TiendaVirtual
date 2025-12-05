@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     
-    const API_URL = 'http://localhost:8081/api/users/register'; 
+    const API_URL = 'https://tiendavirtual-jjxd.onrender.com/api/users/register'; 
     
   
     
