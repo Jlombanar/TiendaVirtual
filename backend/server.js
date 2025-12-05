@@ -6,6 +6,7 @@ import UsersRoutes from "./routes/Users.js";
 import  loginUsuarioRouter from './routes/Login.js';
 import obtenerPerfil  from './routes/Perfil.js';
 import pedidosRoutes from './routes/pedidos.js';
+import RecuperarPassword from './routes/recuperar.js'
 
 
 const app =express();
@@ -23,6 +24,7 @@ app.use("/api/users",UsersRoutes);
 app.use("/api/login", loginUsuarioRouter);
 app.use("/api/perfil", obtenerPerfil);
 app.use("/api/pedidos", pedidosRoutes);
+app.use('/api/Recuperar',RecuperarPassword)
 
 
 
